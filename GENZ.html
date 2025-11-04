@@ -1,0 +1,611 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Z-Bank • Gen-Z Prototype (Final, Interactive)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style> body { font-family: 'Inter', sans-serif; } </style>
+</head>
+<body class="min-h-screen w-full bg-gradient-to-br from-fuchsia-200 via-sky-100 to-emerald-200 text-slate-900">
+  <!-- Header -->
+  <header class="sticky top-0 z-20 backdrop-blur-md bg-white/60 border-b border-white/40">
+    <div class="mx-auto max-w-6xl px-4 py-3 flex items-center gap-3">
+      <div class="size-9 rounded-xl bg-black text-white grid place-content-center font-bold shadow">Z</div>
+      <h1 class="text-xl md:text-2xl font-extrabold tracking-tight">
+        Z-Bank <span class="text-black/60">•</span>
+        <span class="bg-gradient-to-r from-fuchsia-600 via-rose-500 to-amber-500 bg-clip-text text-transparent">Gen-Z Prototype</span>
+      </h1>
+      <div class="ml-auto flex items-center gap-2">
+        <button type="button" id="darkToggle" class="text-xs md:text-sm px-3 py-1.5 rounded-xl bg-white/70 border border-black/10 hover:bg-white shadow">🌗 Theme</button>
+        <div class="text-xs md:text-sm text-black/60">
+          Freedom today, <span class="font-semibold">responsible growth</span> tomorrow
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero (compact image + KPIs + quote) -->
+  <section class="mx-auto max-w-6xl px-4 pt-6 grid gap-4">
+    <div class="rounded-3xl overflow-hidden shadow-xl ring-1 ring-black/5 bg-white/80">
+      <div class="grid md:grid-cols-2 gap-0">
+        <div class="flex flex-col items-center gap-3 p-4">
+          <img id="heroImg" src="https://i.postimg.cc/y6PgPWSY/Whats-App-Image-2025-08-28-at-11-16-56-AM.jpg" alt="Prototype visual" class="max-w-[180px] w-full rounded-2xl shadow-lg">
+          <div class="flex items-center gap-2 text-xs">
+            <span>Image size:</span>
+            <button type="button" id="imgSmall" class="px-2 py-1 rounded bg-white border">S</button>
+            <button type="button" id="imgMedium" class="px-2 py-1 rounded bg-white border">M</button>
+          </div>
+          <!-- Motivational daily quote -->
+          <div id="dailyQuote" class="text-center text-sm italic text-fuchsia-700 mt-2"></div>
+        </div>
+        <div class="p-4 md:p-6 grid content-center gap-4">
+          <div class="grid grid-cols-3 gap-3">
+            <div class="rounded-2xl border border-black/5 bg-white p-4 shadow">
+              <div class="text-xs uppercase tracking-wider text-black/50">Main Balance</div>
+              <div id="kpiBalance" class="mt-1 text-2xl font-black tracking-tight">₹12,000</div>
+            </div>
+            <div class="rounded-2xl border border-black/5 bg-white p-4 shadow">
+              <div class="text-xs uppercase tracking-wider text-black/50">This Month Saved</div>
+              <div id="kpiSaved" class="mt-1 text-2xl font-black tracking-tight">₹1,800</div>
+            </div>
+            <div class="rounded-2xl border border-black/5 bg-white p-4 shadow">
+              <div class="text-xs uppercase tracking-wider text-black/50">Spend Limit</div>
+              <div id="kpiLimit" class="mt-1 text-2xl font-black tracking-tight">₹8,000</div>
+            </div>
+          </div>
+          <div class="flex items-center gap-2">
+            <label for="limitRange" class="text-sm text-black/70">Adjust spend limit</label>
+            <input id="limitRange" type="range" min="3000" max="15000" step="500" class="w-full accent-fuchsia-600">
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- Main -->
+  <main class="mx-auto max-w-6xl px-4 pb-20 grid gap-6 lg:grid-cols-3">
+    <!-- Left: Skill Wallet + Transactions -->
+    <section class="lg:col-span-2 grid gap-6">
+      <!-- Skill Wallet -->
+      <section class="rounded-3xl p-5 md:p-6 bg-white/80 shadow-xl ring-1 ring-black/5">
+        <div class="flex items-center gap-3 mb-1">
+          <h2 class="text-lg md:text-xl font-bold">Skill Wallet: Excel Course</h2>
+          <span id="badgeSkill" class="hidden text-xs px-2 py-1 rounded-full bg-emerald-100 text-emerald-700 border border-emerald-200">Milestone!</span>
+        </div>
+        <p class="text-sm text-black/60 mb-4">Small daily saves → real career tools.</p>
+
+
+        <div class="flex items-end justify-between mb-3">
+          <div id="progressText" class="text-4xl md:text-5xl font-black tracking-tight bg-gradient-to-r from-indigo-600 via-fuchsia-600 to-rose-500 bg-clip-text text-transparent">36%</div>
+          <div id="amountText" class="text-sm text-black/70">₹1,800 / ₹5,000</div>
+        </div>
+        <div class="h-3 w-full rounded-full bg-black/10 overflow-hidden">
+          <div id="progressBar" class="h-full bg-gradient-to-r from-indigo-600 via-fuchsia-600 to-rose-500 transition-[width] duration-500" style="width:36%"></div>
+        </div>
+
+
+        <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-3">
+          <div class="rounded-2xl border border-black/5 bg-white p-4 shadow">
+            <div class="text-xs uppercase tracking-wider text-black/50">Daily Save</div>
+            <div class="mt-1 text-lg font-bold"><input id="setDaily" type="number" class="px-2 py-1 rounded border w-24" value="100"> / day</div>
+          </div>
+          <div class="rounded-2xl border border-black/5 bg-white p-4 shadow">
+            <div class="text-xs uppercase tracking-wider text-black/50">Weeks Left</div>
+            <div id="weeksLeft" class="mt-1 text-lg font-bold">5</div>
+          </div>
+        </div>
+
+
+        <div class="mt-5 flex flex-wrap gap-2">
+          <button type="button" id="add100" class="px-4 py-2 rounded-xl text-sm font-semibold text-white bg-gradient-to-r from-indigo-600 via-fuchsia-600 to-rose-500">+ ₹100 Save</button>
+          <input id="customAdd" type="number" min="1" placeholder="Enter amount" class="px-3 py-2 rounded border w-32" />
+          <button type="button" id="addCustom" class="px-4 py-2 rounded-xl text-sm font-semibold bg-black text-white">Add amount</button>
+          <input id="setTarget" type="number" min="100" placeholder="Set target (₹)" class="px-3 py-2 rounded border w-40" />
+          <button type="button" id="updateTarget" class="px-4 py-2 rounded-xl text-sm font-semibold bg-black text-white">Update target</button>
+          <button type="button" id="autoSaveToggle" class="px-4 py-2 rounded-xl text-sm font-semibold bg-white/70 border border-black/10">Enable Auto-Save</button>
+          <button type="button" id="redeemBtn" class="px-4 py-2 rounded-xl text-sm font-semibold bg-white/70 border border-black/10">View Courses</button>
+        </div>
+
+
+        <div class="mt-4 grid gap-2">
+          <label class="text-sm text-black/60">Why are you saving? (motivation)</label>
+          <div class="flex gap-2 flex-wrap">
+            <input id="whyInput" placeholder="e.g., Buy a laptop / Pay exam fees" class="px-3 py-2 rounded border flex-1 min-w-60" />
+            <button type="button" id="saveWhy" class="px-4 py-2 rounded-xl text-sm font-semibold bg-emerald-500 text-white">Save</button>
+          </div>
+          <div id="motivateMsg" class="text-sm mt-2 rounded-xl bg-gradient-to-r from-emerald-100 to-sky-100 border border-emerald-200 p-3"></div>
+        </div>
+      </section>
+
+
+      <!-- Transactions & Nudges -->
+      <section class="rounded-3xl p-5 md:p-6 bg-white/80 shadow-xl ring-1 ring-black/5">
+        <div class="flex items-center justify-between mb-3">
+          <h3 class="text-lg font-bold">Transactions</h3>
+          <button type="button" id="addTxnBtn" class="px-3 py-1.5 rounded-xl text-sm font-semibold bg-black text-white">+ Add</button>
+        </div>
+        <div class="grid md:grid-cols-2 gap-6">
+          <div>
+            <ul id="txnList" class="space-y-3 text-sm"></ul>
+          </div>
+          <aside>
+            <h4 class="font-semibold mb-2">Responsible Nudges</h4>
+            <ul id="nudgeList" class="space-y-3 text-sm"></ul>
+          </aside>
+        </div>
+      </section>
+    </section>
+
+
+    <!-- Right: Squad + Badges + KYC -->
+    <section class="grid gap-6">
+      <section class="rounded-3xl p-5 md:p-6 bg-white/80 shadow-xl ring-1 ring-black/5">
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="text-lg md:text-xl font-bold">Squad Goal: “Figma & Design Tools”</h3>
+          <span class="text-sm text-black/60">Target: ₹4,000</span>
+        </div>
+        <div id="squadGrid" class="grid gap-3 md:grid-cols-3"></div>
+        <div class="mt-4 rounded-2xl p-4 bg-gradient-to-r from-emerald-400 via-cyan-400 to-sky-500 text-white shadow flex items-center justify-between">
+          <div class="text-sm">Squad total</div>
+          <div id="squadTotal" class="text-xl md:text-2xl font-black tracking-tight">₹0</div>
+        </div>
+        <div class="mt-3 flex gap-2">
+          <button type="button" id="addMemberBtn" class="px-3 py-1.5 rounded-xl text-sm font-semibold bg-white border border-black/10">+ Member</button>
+          <button type="button" id="addContribBtn" class="px-3 py-1.5 rounded-xl text-sm font-semibold bg-black text-white">+ Contribution</button>
+        </div>
+      </section>
+
+
+      <section class="rounded-3xl p-5 md:p-6 bg-white/80 shadow-xl ring-1 ring-black/5">
+        <h3 class="text-lg font-bold mb-3">Badges</h3>
+        <div id="badgeWrap" class="flex flex-wrap gap-2 text-xs"></div>
+      </section>
+    
+      <section class="rounded-3xl p-5 md:p-6 bg-gradient-to-r from-amber-100 to-rose-100 ring-1 ring-black/5 shadow">
+  <h3 class="text-lg font-bold mb-3">Mini-KYC</h3>
+  <form id="kycForm" class="grid gap-3">
+    <input type="text" id="kycName" placeholder="Full Name" class="px-3 py-2 rounded-xl border border-black/20" required />
+    <input type="date" id="kycDOB" class="px-3 py-2 rounded-xl border border-black/20" required />
+    <input type="text" id="kycCollege" placeholder="College / University ID" class="px-3 py-2 rounded-xl border border-black/20" required />
+    <input type="text" id="kycAadhar" placeholder="Aadhaar (last 4 digits)" maxlength="4" class="px-3 py-2 rounded-xl border border-black/20" required />
+    <button type="submit" class="px-4 py-2 rounded-xl text-sm font-semibold bg-black text-white">Submit</button>
+  </form>
+  <div id="kycStatus" class="mt-2 text-sm text-emerald-700 font-semibold"></div>
+</section>
+<script>
+bind('kycForm','submit',(e)=>{
+  e.preventDefault();
+  state.kyc = {
+    name: el('kycName').value.trim(),
+    dob: el('kycDOB').value,
+    college: el('kycCollege').value.trim(),
+    aadhar: el('kycAadhar').value.trim()
+  };
+  persist();
+  el('kycStatus').textContent = "✅ KYC Completed!";
+  el('kycForm').reset();
+};
+
+// Show status if already completed
+if (state.kyc?.name) {
+  el('kycStatus').textContent = "✅ KYC already submitted: " + state.kyc.name;
+}
+</script>
+    </section>
+  </main>
+
+
+  <!-- Footer -->
+  <footer class="mx-auto max-w-6xl px-4 pb-8">
+    <div class="rounded-2xl bg-black text-white p-4 md:p-5 grid md:grid-cols-3 gap-4">
+      <div>
+        <div class="text-sm uppercase tracking-widest text-white/60">Tagline</div>
+        <div class="font-semibold">Freedom today, responsible growth tomorrow</div>
+      </div>
+      <div>
+        <div class="text-sm uppercase tracking-widest text-white/60">Focus</div>
+        <div class="font-semibold">Skill wallets • Squad goals • Responsible nudges</div>
+      </div>
+      <div>
+        <div class="text-sm uppercase tracking-widest text-white/60">Credit</div>
+        <div class="font-semibold">Prototype visual by KR Maghizhan</div>
+      </div>
+    </div>
+  </footer>
+
+
+  <!-- Dialogs -->
+  <dialog id="txnDialog" class="rounded-2xl p-0 w-full max-w-md border border-black/10 shadow-2xl backdrop:bg-black/50">
+    <form method="dialog" class="bg-white rounded-2xl overflow-hidden">
+      <div class="p-4 border-b border-black/10 flex items-center justify-between">
+        <div class="font-semibold">Add Transaction</div>
+        <button type="button" class="px-2 py-1 text-sm" onclick="document.getElementById('txnDialog').close()">✕</button>
+      </div>
+      <div class="p-4 grid gap-3">
+        <label class="grid gap-1 text-sm">
+          <span>Label</span>
+          <input id="txnLabel" class="px-3 py-2 rounded-xl border border-black/10" placeholder="e.g., Pizza, Metro, OTT" />
+        </label>
+        <label class="grid gap-1 text-sm">
+          <span>Amount (₹)</span>
+          <input id="txnAmount" type="number" class="px-3 py-2 rounded-xl border border-black/10" placeholder="e.g., 299" />
+        </label>
+        <label class="grid gap-1 text-sm">
+          <span>Category</span>
+          <select id="txnCat" class="px-3 py-2 rounded-xl border border-black/10">
+            <option>Food</option>
+            <option>Travel</option>
+            <option>Shopping</option>
+            <option>Bills</option>
+            <option>Learning</option>
+          </select>
+        </label>
+      </div>
+      <div class="p-4 border-t border-black/10 flex justify-end gap-2">
+        <button type="button" class="px-4 py-2 rounded-xl text-sm bg-white border border-black/10" onclick="document.getElementById('txnDialog').close()">Cancel</button>
+        <button type="submit" id="txnSaveBtn" class="px-4 py-2 rounded-xl text-sm bg-black text-white">Save</button>
+      </div>
+    </form>
+  </dialog>
+
+
+  <dialog id="memberDialog" class="rounded-2xl p-0 w-full max-w-md border border-black/10 shadow-2xl backdrop:bg-black/50">
+    <form method="dialog" class="bg-white rounded-2xl overflow-hidden">
+      <div class="p-4 border-b border-black/10 flex items-center justify-between">
+        <div class="font-semibold">Add Squad Member</div>
+        <button type="button" class="px-2 py-1 text-sm" onclick="document.getElementById('memberDialog').close()">✕</button>
+      </div>
+      <div class="p-4 grid gap-3">
+        <label class="grid gap-1 text-sm">
+          <span>Name</span>
+          <input id="memberName" class="px-3 py-2 rounded-xl border border-black/10" placeholder="e.g., Aarav" />
+        </label>
+      </div>
+      <div class="p-4 border-t border-black/10 flex justify-end gap-2">
+        <button type="button" class="px-4 py-2 rounded-xl text-sm bg-white border border-black/10" onclick="document.getElementById('memberDialog').close()">Cancel</button>
+        <button type="submit" id="memberSaveBtn" class="px-4 py-2 rounded-xl text-sm bg-black text-white">Add</button>
+      </div>
+    </form>
+  </dialog>
+
+
+  <dialog id="contribDialog" class="rounded-2xl p-0 w-full max-w-md border border-black/10 shadow-2xl backdrop:bg-black/50">
+    <form method="dialog" class="bg-white rounded-2xl overflow-hidden">
+      <div class="p-4 border-b border-black/10 flex items-center justify-between">
+        <div class="font-semibold">Add Contribution</div>
+        <button type="button" class="px-2 py-1 text-sm" onclick="document.getElementById('contribDialog').close()">✕</button>
+      </div>
+      <div class="p-4 grid gap-3">
+        <label class="grid gap-1 text-sm">
+          <span>Member</span>
+          <select id="contribWho" class="px-3 py-2 rounded-xl border border-black/10"></select>
+        </label>
+        <label class="grid gap-1 text-sm">
+          <span>Amount (₹)</span>
+          <input id="contribAmt" type="number" class="px-3 py-2 rounded-xl border border-black/10" placeholder="e.g., 250" />
+        </label>
+      </div>
+      <div class="p-4 border-t border-black/10 flex justify-end gap-2">
+        <button type="button" class="px-4 py-2 rounded-xl text-sm bg-white border border-black/10" onclick="document.getElementById('contribDialog').close()">Cancel</button>
+        <button type="submit" id="contribSaveBtn" class="px-4 py-2 rounded-xl text-sm bg-black text-white">Save</button>
+      </div>
+    </form>
+  </dialog>
+
+
+  <!-- Final Script (hardened bindings + LocalStorage + quotes) -->
+  <script>
+    // ==== helpers ====
+    const el  = id => document.getElementById(id);
+    const fmtINR = n => n.toLocaleString('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 });
+    const bind = (id, ev, fn) => { const e = el(id); if (e) e.addEventListener(ev, fn); };
+    const ls = {
+      get(k, fb){ try { return JSON.parse(localStorage.getItem(k)) ?? fb } catch { return fb } },
+      set(k, v){ localStorage.setItem(k, JSON.stringify(v)); }
+    };
+
+
+    // ==== state ====
+// ==== state ====
+const state = ls.get('zbank', {
+  mainBalance: 45780,   // Realistic student account balance
+  spendLimit: 15000,
+  savedThisMonth: 4200,
+  skillWallet: { saved: 4200, target: 10000, auto: true, daily: 200, reason: 'Buy a new laptop for college' },
+
+  // Last 10 transactions (with categories)
+  txns: [
+    { label: 'Swiggy - Burgers', amount: 320, cat: 'Food' },
+    { label: 'Uber Auto', amount: 145, cat: 'Travel' },
+    { label: 'Zara Shopping', amount: 2100, cat: 'Shopping' },
+    { label: 'Netflix', amount: 499, cat: 'Bills' },
+    { label: 'Course: Python Bootcamp', amount: 2000, cat: 'Learning' },
+    { label: 'Dominos Pizza', amount: 560, cat: 'Food' },
+    { label: 'Amazon - Headphones', amount: 1599, cat: 'Shopping' },
+    { label: 'Phone Recharge', amount: 239, cat: 'Bills' },
+    { label: 'Local Metro Pass', amount: 750, cat: 'Travel' },
+    { label: 'Udemy: Excel Mastery', amount: 799, cat: 'Learning' },
+  ],
+
+  // Squad savings for "Figma & Design Tools"
+  squad: {
+    target: 8000,
+    members: [
+      { name: 'Aarav', contributed: 2500 },
+      { name: 'Meera', contributed: 1800 },
+      { name: 'Zoya', contributed: 1300 },
+      { name: 'Rahul', contributed: 1000 },
+      { name: 'Ananya', contributed: 900 },
+    ]
+  },
+
+  badges: ['First Transaction'],  // Start with 1 badge unlocked
+  streak: { count: 2, lastISO: '2025-08-27' }
+
+});
+
+    const persist = () => ls.set('zbank', state);
+
+
+    // ==== theme ====
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+    const setTheme = d => document.documentElement.classList.toggle('dark', d);
+    setTheme(ls.get('zbankTheme', prefersDark.matches));
+    bind('darkToggle', 'click', () => { const d = !document.documentElement.classList.contains('dark'); setTheme(d); localStorage.setItem('zbankTheme', JSON.stringify(d)); });
+
+
+    // ==== KPI / limit ====
+    function renderKPI(){
+      const r = (id, txt) => { const e=el(id); if(e) e.textContent=txt; };
+      r('kpiBalance', fmtINR(state.mainBalance));
+      r('kpiSaved', fmtINR(state.savedThisMonth));
+      r('kpiLimit', fmtINR(state.spendLimit));
+      const range = el('limitRange'); if (range) range.value = state.spendLimit;
+    }
+    bind('limitRange','input', e=>{ state.spendLimit = Number(e.target.value); renderKPI(); persist(); });
+
+
+    // ==== quotes (interesting bit) ====
+    const quotes = [
+      "Your future is created by what you save today.",
+      "Every rupee saved is an investment in yourself.",
+      "Discipline now = freedom later.",
+      "Tiny steps → giant leaps.",
+      "Save smart, live smart."
+    ];
+    function showQuote(){
+      const q = quotes[Math.floor(Math.random()*quotes.length)];
+      if (el('dailyQuote')) el('dailyQuote').textContent = q;
+    }
+    // initial + auto-cycle every 8s
+    showQuote();
+    setInterval(showQuote, 8000);
+
+
+    // ==== skill wallet ====
+    const progressText = el('progressText');
+    const amountText   = el('amountText');
+    const progressBar  = el('progressBar');
+    const weeksLeft    = el('weeksLeft');
+    const badgeSkill   = el('badgeSkill');
+
+
+    function renderMotivation(progress, reason){
+      const streak = state.streak.count;
+      const base = [
+        'Small steps compound into big wins.',
+        'Future-you is already thanking you.',
+        'Consistency > intensity. Keep going!',
+        'Every ₹100 moves you closer.'
+      ];
+      let line = base[Math.floor(Math.random()*base.length)];
+      if (progress >= 80) line = '🔥 Final stretch! One more push to finish.';
+      else if (progress >= 50) line = 'Halfway hero! Keep the momentum.';
+      if (streak >= 3) line += ` • Streak ${streak} days!`;
+      if (reason) line += ` • Why: ${reason}`;
+      const m = el('motivateMsg'); if (m) m.textContent = line;
+    }
+
+
+    function updateSkill(){
+      const { saved, target, auto, daily, reason } = state.skillWallet;
+      const progress = Math.max(0, Math.min(100, Math.round((saved / target) * 100)));
+      if (progressText) progressText.textContent = progress + '%';
+      if (amountText) amountText.textContent = ${fmtINR(saved)} / ${fmtINR(target)};
+      if (progressBar) progressBar.style.width = progress + '%';
+      const remaining = Math.max(0, target - saved);
+      if (weeksLeft) weeksLeft.textContent = Math.max(0, Math.ceil(remaining / (daily * 7)));
+      const autoBtn = el('autoSaveToggle'); if (autoBtn) autoBtn.textContent = auto ? 'Disable Auto-Save' : 'Enable Auto-Save';
+      if (badgeSkill) badgeSkill.classList.toggle('hidden', progress < 50);
+      const dailyInput = el('setDaily'); if (dailyInput) dailyInput.value = daily;
+      renderMotivation(progress, reason);
+      if (progress >= 100 && !state.badges.includes('Skill Wallet Complete')){ state.badges.push('Skill Wallet Complete'); renderBadges(); }
+    }
+
+
+    function updateStreak(){
+      const today = new Date();
+      const iso = today.toISOString().slice(0,10);
+      const prev = state.streak.lastISO;
+      if (!prev){ state.streak.count = 1; state.streak.lastISO = iso; return; }
+      const prevDate = new Date(prev);
+      const diff = Math.round((today - prevDate) / 86400000);
+      if (diff === 1) { state.streak.count += 1; state.streak.lastISO = iso; }
+      else if (diff > 1) { state.streak.count = 1; state.streak.lastISO = iso; }
+    }
+
+
+    function addSavings(amt){
+      state.skillWallet.saved = Math.min(state.skillWallet.target, state.skillWallet.saved + amt);
+      state.savedThisMonth += amt;
+      updateStreak();
+      updateSkill(); renderKPI(); persist();
+    }
+
+
+    bind('add100',      'click', () => addSavings(100));
+    bind('addCustom',   'click', () => { const v = Number(el('customAdd')?.value); if (!v) return; addSavings(v); el('customAdd').value=''; });
+    bind('updateTarget','click', () => { const v = Number(el('setTarget')?.value); if (!v) return; state.skillWallet.target = v; updateSkill(); persist(); });
+    bind('updateDaily', 'click', () => { const v = Number(el('setDaily')?.value);  if (!v) return; state.skillWallet.daily  = v; updateSkill(); persist(); });
+    bind('saveWhy',     'click', () => { state.skillWallet.reason = (el('whyInput')?.value || '').trim(); updateSkill(); persist(); });
+    bind('autoSaveToggle','click', () => {
+      state.skillWallet.auto = !state.skillWallet.auto;
+      if (state.skillWallet.auto && !state.badges.includes('First Auto-Save')){ state.badges.push('First Auto-Save'); renderBadges(); }
+      updateSkill(); persist();
+    });
+
+
+    // Image size controls
+    bind('imgSmall','click', ()=>{ const i = el('heroImg'); if (i) i.className = 'max-w-[180px] w-full rounded-2xl shadow-lg'; });
+    bind('imgMedium','click',()=>{ const i = el('heroImg'); if (i) i.className = 'max-w-[260px] w-full rounded-2xl shadow-lg'; });
+
+
+    // ==== transactions + nudges ====
+    function renderNudges(){
+      const spendFood   = state.txns.filter(t=>t.cat==='Food').reduce((s,t)=>s+t.amount,0);
+      const spendBills  = state.txns.filter(t=>t.cat==='Bills').reduce((s,t)=>s+t.amount,0);
+      const spendTravel = state.txns.filter(t=>t.cat==='Travel').reduce((s,t)=>s+t.amount,0);
+      const overspend   = state.txns.reduce((s,t)=>s+t.amount,0) > state.spendLimit;
+      const ul = el('nudgeList'); if (!ul) return;
+      ul.innerHTML = '';
+      const base = [
+        'Skip 1 pizza/week → Excel/Power BI course in 4 months 💻',
+        'Your takeaway spend ≈ Canva Pro subscription 🎨',
+        'Save ₹100/day → Photoshop in 6 weeks 📷',
+        'Cancel unused OTT → Buy a Python course 🐍',
+      ];
+      if (spendFood > 1000) base.unshift('🍕 Food looks high this month. Try home-made 2x/week → save ₹800+');
+      if (spendBills > 500) base.unshift('📺 Review OTT/phone plans → save ₹200-₹400/month');
+      if (spendTravel > 700) base.unshift('🚌 Consider weekly pass or car-pool → save 15-25%');
+      if (overspend) base.unshift('⚠ You crossed your spend limit. Slide the limit or cut 2 small spends.');
+      base.slice(0,4).forEach(text => {
+        const li = document.createElement('li');
+        li.className = 'rounded-2xl border border-black/5 bg-white p-3 shadow';
+        li.textContent = text;
+        ul.appendChild(li);
+      });
+    }
+
+
+    function renderTxns(){
+      const ul = el('txnList'); if (!ul) return;
+      ul.innerHTML = '';
+      state.txns.forEach((t, i) => {
+        const li = document.createElement('li');
+        li.className = 'rounded-2xl border border-black/5 bg-white p-3 shadow flex items-center justify-between';
+        li.innerHTML = <div><div class="font-medium">${t.label}</div><div class="text-xs text-black/60">${t.cat}</div></div><div class="font-semibold">${fmtINR(t.amount)}</div>;
+        li.title = 'Click to remove';
+        li.addEventListener('click', () => { state.txns.splice(i,1); renderTxns(); persist(); });
+        ul.appendChild(li);
+      });
+      renderNudges();
+    }
+
+
+    bind('addTxnBtn','click', () => el('txnDialog')?.showModal());
+    bind('txnSaveBtn','click', (e) => {
+      e.preventDefault();
+      const label = el('txnLabel')?.value.trim();
+      const amount = Number(el('txnAmount')?.value);
+      const cat = el('txnCat')?.value;
+      if (!label || !amount) return;
+      state.txns.unshift({ label, amount, cat });
+      if (cat !== 'Learning'){ state.mainBalance -= amount; } else { state.savedThisMonth += amount; }
+      renderTxns(); renderKPI(); persist();
+      el('txnLabel').value = ''; el('txnAmount').value=''; el('txnDialog')?.close();
+      if (!state.badges.includes('First Transaction')){ state.badges.push('First Transaction'); renderBadges(); persist(); }
+    });
+
+
+bind('kycForm','submit',(e)=>{
+  e.preventDefault();
+  state.kyc = {
+    name: el('kycName').value.trim(),
+    dob: el('kycDOB').value,
+    college: el('kycCollege').value.trim(),
+    aadhar: el('kycAadhar').value.trim()
+  };
+  persist();
+  el('kycStatus').textContent = "✅ KYC Completed!";
+});
+
+    // ==== squad ====
+    function renderSquad(){
+      const grid = el('squadGrid'); if (!grid) return;
+      grid.innerHTML = '';
+      state.squad.members.forEach(m => {
+        const card = document.createElement('div');
+        card.className = 'rounded-2xl p-4 bg-white border border-black/5 shadow';
+        const initial = (m.name?.[0] || '?').toUpperCase();
+        card.innerHTML = `
+          <div class="flex items-center gap-3">
+            <div class="size-9 rounded-xl bg-gradient-to-br from-amber-400 via-pink-400 to-fuchsia-500 text-white grid place-content-center font-bold shadow">${initial}</div>
+            <div>
+              <div class="font-semibold">${m.name}</div>
+              <div class="text-xs text-black/60">Contributed ${fmtINR(m.contributed)}</div>
+            </div>
+          </div>`;
+        grid.appendChild(card);
+      });
+      const total = state.squad.members.reduce((s,m)=>s+m.contributed,0);
+      const totEl = el('squadTotal'); if (totEl) totEl.textContent = fmtINR(total);
+      if (total >= state.squad.target && !state.badges.includes('Squad Goal Achieved')){ state.badges.push('Squad Goal Achieved'); renderBadges(); }
+    }
+
+
+    function refreshMemberSelect(){
+      const sel = el('contribWho'); if (!sel) return;
+      sel.innerHTML = '';
+      state.squad.members.forEach((m, i) => { const opt = document.createElement('option'); opt.value = i; opt.textContent = m.name; sel.appendChild(opt); });
+    }
+    bind('addMemberBtn','click', () => el('memberDialog')?.showModal());
+    bind('memberSaveBtn','click', (e) => { e.preventDefault(); const name = el('memberName')?.value.trim(); if (!name) return; state.squad.members.push({ name, contributed: 0 }); renderSquad(); refreshMemberSelect(); persist(); el('memberName').value = ''; el('memberDialog')?.close(); });
+    bind('addContribBtn','click', () => { refreshMemberSelect(); el('contribDialog')?.showModal(); });
+    bind('contribSaveBtn','click', (e) => { e.preventDefault(); const idx = Number(el('contribWho')?.value); const amt = Number(el('contribAmt')?.value); if (Number.isNaN(idx) || !amt) return; state.squad.members[idx].contributed += amt; renderSquad(); persist(); el('contribAmt').value=''; el('contribDialog')?.close(); });
+
+
+    // ==== badges ====
+    function renderBadges(){
+      const wrap = el('badgeWrap'); if (!wrap) return;
+      wrap.innerHTML = '';
+      const defs = {
+        'Skill Wallet Complete': 'Finished a learning goal 🎓',
+        'Squad Goal Achieved': 'Crushed a squad target 💥',
+        'First Auto-Save': 'Enabled auto-save 🔁',
+        'First Transaction': 'Logged a spend 🧾',
+      };
+      state.badges.forEach(b => {
+        const tag = document.createElement('span');
+        tag.className = 'inline-flex items-center gap-1 rounded-full border border-black/10 bg-white px-3 py-1 shadow text-xs';
+        tag.innerHTML = <span class="size-1.5 rounded-full bg-emerald-500"></span> <strong>${b}</strong> <span class="text-black/60">— ${defs[b] || ''}</span>;
+        wrap.appendChild(tag);
+      });
+    }
+
+
+    // ==== init ====
+    function init(){
+      renderKPI();
+      updateSkill();
+      renderTxns();
+      renderSquad();
+      renderBadges();
+      if (state.skillWallet.reason && el('whyInput')) el('whyInput').value = state.skillWallet.reason;
+    }
+    init();
+
+
+    // Auto-save demo tick
+    setInterval(() => {
+      if (state.skillWallet.auto && state.skillWallet.saved < state.skillWallet.target){
+        state.skillWallet.saved = Math.min(state.skillWallet.target, state.skillWallet.saved + 100);
+        state.savedThisMonth += 100;
+        updateSkill(); renderKPI(); persist();
+      }
+    }, 5000);
+  </script>
+</body>
+</html>
